@@ -859,15 +859,14 @@ var applyImageRule = function applyImageRule(service) {
       service.mdImages.push(src)
       var title = node.title || "";
       var titlePart = title ? ' "' + title + '"' : "";
-      var domainPattern = /^(https?:\/\/[^/]+)(.*)$/;
       try {
+        var domainPattern = /^(https?:\/\/[^/]+)(.*)$/;
         const imgNoOrigin = src.split("?")[0].match(domainPattern);
-        const dest = imgNoOrigin[2].replace(/\//g, "")
+        const dest = imgNoOrigin[1].replace(/\./g, "").replace(/\:/g, "").replace(/\//g, "") + imgNoOrigin[2].replace(/\//g, "")
         const destSrc = `${options.assetsPublicPath}/${dest}`
         return src ? "![" + alt + "]" + "(" + destSrc + titlePart + ")" : "";
       } catch (error) {
-        console.log('图片地址出错',src);
-        return src ? "![" + alt + "]" + "(" + destSrc + titlePart + ")" : "";
+        return src ? "![" + alt + "]" + "(" + src + titlePart + ")" : "";
       }
     },
   });
